@@ -21,9 +21,17 @@ endif (NOT Slint_FOUND)
 # Find OpenCV
 find_package(OpenCV REQUIRED)
 
+# Find GTK
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+
+
 add_executable(my_application src/main.cpp)
-target_link_libraries(my_application PRIVATE Slint::Slint ${OpenCV_LIBS})
+target_link_libraries(my_application PRIVATE Slint::Slint ${OpenCV_LIBS} ${GTK3_LIBRARIES})
 # target_link_libraries(my_application PRIVATE Slint::Slint)
+
+target_include_directories(my_application PRIVATE ${GTK3_INCLUDE_DIRS})
+target_compile_options(my_application PRIVATE ${GTK3_CFLAGS_OTHER})
 
 slint_target_sources(my_application ui/appwindow.slint)
 # On Windows, copy the Slint DLL next to the application binary so that it's found.

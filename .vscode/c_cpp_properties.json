@@ -5,7 +5,9 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/build/_deps/slint-src/api/cpp/include/",
-                "/usr/include/opencv4"
+                "/usr/include/opencv4",
+                "/usr/include/gtk-4.0",
+                "/usr/include/glib-2.0"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
