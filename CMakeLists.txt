@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 project(my_application LANGUAGES CXX)
 
 find_package(Slint QUIET)
+
 if (NOT Slint_FOUND)
   message("Slint could not be located in the CMake module search path. Downloading it from Git and building it locally")
   include(FetchContent)
@@ -16,8 +17,14 @@ if (NOT Slint_FOUND)
   FetchContent_MakeAvailable(Slint)
 endif (NOT Slint_FOUND)
 
+
+# Find OpenCV
+find_package(OpenCV REQUIRED)
+
 add_executable(my_application src/main.cpp)
-target_link_libraries(my_application PRIVATE Slint::Slint)
+target_link_libraries(my_application PRIVATE Slint::Slint ${OpenCV_LIBS})
+# target_link_libraries(my_application PRIVATE Slint::Slint)
+
 slint_target_sources(my_application ui/appwindow.slint)
 # On Windows, copy the Slint DLL next to the application binary so that it's found.
 if (WIN32)
