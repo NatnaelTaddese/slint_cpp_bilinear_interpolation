@@ -2,6 +2,7 @@
 
 #include "appwindow.h"
 #include "utils/file_dialog.cpp"
+
 // #include <opencv2/opencv.hpp>
 
 // int main(int argc, char **argv)
@@ -16,7 +17,7 @@
 //     return 0;
 // }
 
-void process_image()
+void load_image()
 {
     std::string file_path = showFileDialog();
     if (!file_path.empty())
@@ -45,7 +46,7 @@ int main()
     auto appwindow = AppWindow::create();
 
     // Connect button click signal
-    appwindow->on_clicked(process_image);
+    appwindow->on_clicked(load_image);
 
     appwindow->run();
     return 0;

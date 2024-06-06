@@ -28,6 +28,7 @@ std::string showFileDialog()
         GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
         file_path = gtk_file_chooser_get_filename(chooser);
         filename = file_path;
+        // manage memory
         g_free(file_path);
     }
 
