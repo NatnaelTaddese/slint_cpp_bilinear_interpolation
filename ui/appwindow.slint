@@ -2,8 +2,11 @@ import { Button, VerticalBox } from "std-widgets.slint";
 
 
 export component AppWindow inherits Window {
+
+    preferred-height: 300px;
+    preferred-width: 300px;
     callback clicked();
-    property<string> selected_image: "";
+    in property<image> selected_image: @image-url("");
 
     VerticalBox {
         Button {
@@ -14,7 +17,11 @@ export component AppWindow inherits Window {
         }
 
         Text {
-            text: selected_image;
+            // text: selected_image;
+        }
+        Image {
+            // source: @image-url("{root.selected_image}");
+            source: selected_image;
         }
     }
 }
