@@ -3,20 +3,6 @@
 #include "appwindow.h"
 #include "utils/file_dialog.cpp"
 
-// #include <opencv2/opencv.hpp>
-
-// int main(int argc, char **argv)
-// {
-//     auto ui = AppWindow::create();
-//     cv::Mat image = cv::imread("test.jpg");
-
-//     ui->on_request_increase_value([&]
-//                                   { ui->set_counter(ui->get_counter() + 1); });
-
-//     ui->run();
-//     return 0;
-// }
-
 void load_image()
 {
     std::string file_path = showFileDialog();
@@ -40,7 +26,7 @@ void load_image()
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
     // Initialize Slint UI
     auto appwindow = AppWindow::create();
@@ -59,6 +45,7 @@ int main()
             } else {
                 std::cout << "Image loaded: " << file_path << std::endl;
                 appwindow->set_selected_image( slint::Image::load_from_path(file_path.c_str()));
+                appwindow->set_valid_image_selected(true);
 
                 // Display the image using OpenCV (optional)
                 // cv::imshow("Selected Image", image);

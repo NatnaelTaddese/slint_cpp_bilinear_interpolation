@@ -1,8 +1,10 @@
-import { ScrollView, Spinner } from "std-widgets.slint";
+import { ScrollView, Spinner, Button } from "std-widgets.slint";
 export component displayImages inherits Rectangle {
 
     in property <color> bgcolor;
     in property <image> inputimage;
+    in property <bool> isPrimaryDisplay;
+    callback select_action();
 
     min-width: 400px;
     min-height: 400px;
@@ -22,12 +24,23 @@ export component displayImages inherits Rectangle {
 
         if (inputimage.height == 0): Rectangle {
 
-            x: 40px;
-            y: 40px;
-            Spinner {}
-            Text {
-                text: "Select Image";
+            x: root.width / 2;
+            y: root.height / 2;
+            
+            if isPrimaryDisplay: Rectangle {
+                Button {
+                    text: @tr("Select Image");
+                    clicked => {select_action();}
+                }
             }
+
+            if !isPrimaryDisplay: Rectangle {
+                Text {
+                    text: @tr("Output will be displayed here");
+                }
+            }
+
+            
             
         }
 

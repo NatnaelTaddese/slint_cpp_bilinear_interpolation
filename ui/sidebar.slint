@@ -1,6 +1,18 @@
-export component displayImages inherits Rectangle{
+import { Button } from "std-widgets.slint";
+export component SideBar inherits Rectangle{
 
-    in property <bool> imageLoaded;
-    
+    in property <bool> ValidImageLoaded : false;
+
+    min-width: 200px;
+    max-width: 400px;
+
+    background: rgb(43, 45, 48);
+
+    Button {
+        enabled: root.ValidImageLoaded;
+        primary: true;
+        text: @tr("Save to file");
+    }
+
 
 }

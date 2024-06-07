@@ -1,14 +1,17 @@
 import { Button, VerticalBox, ScrollView, HorizontalBox } from "std-widgets.slint";
 import { displayImages } from "displayimages.slint";
+import { SideBar } from "sidebar.slint";
 
 
 export component AppWindow inherits Window {
+    title: @tr("Bilinear Interpolation");
 
     preferred-height: 300px;
     preferred-width: 300px;
 
     callback clicked();
     in property<image> selected_image: @image-url("");
+    in property <bool> valid_image_selected;
     property <image> emptyImage: @image-url("");
 
     // VerticalBox {
@@ -73,23 +76,37 @@ export component AppWindow inherits Window {
     // }
 
     HorizontalBox {
-        inputImage := displayImages {
-            bgcolor: red;
-            inputimage: selected_image;
-        }
+        padding: 0px;
+        VerticalBox {
+            inputImage := displayImages {
+                // bgcolor: red;
+                isPrimaryDisplay: true;
 
-        outputImage := displayImages {
-            bgcolor: blue;
-        }
+                inputimage: selected_image;
+                select_action => {root.clicked();}
+            }
 
-        Button {
-            // max-width: 30px;
-            primary: true;
-            text: "Open Image";
-            clicked => {
-            root.clicked();
+            Button {
+                preferred-width: 120px;
+                primary: true;
+                text: "Open Image";
+                clicked => {
+                root.clicked();
+                }
             }
         }
+        
+
+        outputImage := displayImages {
+            // bgcolor: blue;
+        }
+
+
+        SideBar {
+            ValidImageLoaded: valid_image_selected;
+        }
+
+        
 
     }
 
