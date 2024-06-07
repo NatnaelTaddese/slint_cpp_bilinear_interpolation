@@ -1,28 +1,98 @@
-import { Button, VerticalBox } from "std-widgets.slint";
+import { Button, VerticalBox, ScrollView, HorizontalBox } from "std-widgets.slint";
+import { displayImages } from "displayimages.slint";
 
 
 export component AppWindow inherits Window {
 
     preferred-height: 300px;
     preferred-width: 300px;
+
     callback clicked();
     in property<image> selected_image: @image-url("");
+    property <image> emptyImage: @image-url("");
 
-    VerticalBox {
+    // VerticalBox {
+    //     // max-width: 400px;
+    //     Button {
+    //         // max-width: 30px;
+    //         primary: true;
+    //         text: "Open Image";
+    //         clicked => {
+    //             root.clicked();
+    //         }
+    //     }
+
+    //     Text {
+    //         // text: selected_image;
+    //         // width: 300px;
+    //     }
+        
+    //     Rectangle {
+            
+    //         border-radius: 5px;
+            
+    //     }
+
+    //     GridLayout {
+    //         preferred-height: 300px;
+    //         preferred-width: 300px;
+    //         Rectangle {
+    //             background: red;
+    //             preferred-height: 80px;
+    //             preferred-width: 80px;
+    //         }
+
+    //         Rectangle {
+    //             background: green;
+    //             preferred-height: 80px;
+    //             preferred-width: 80px;
+    //         }
+
+    //         Rectangle {
+    //             background: yellow;
+    //             preferred-height: 80px;
+    //             preferred-width: 80px;
+    //             max-width: 100px;
+    //         }
+    //     }
+
+    //     ScrollView {
+    //         enabled: true;
+    //         viewport-height: 600px;
+    //         viewport-width: 500px;
+        
+    //         Image {
+    //             // source: @image-url("{root.selected_image}");
+    //             source: selected_image;
+    //             image-fit: contain;
+                
+                
+    //         }
+    //     }
+        
+    // }
+
+    HorizontalBox {
+        inputImage := displayImages {
+            bgcolor: red;
+            inputimage: selected_image;
+        }
+
+        outputImage := displayImages {
+            bgcolor: blue;
+        }
+
         Button {
+            // max-width: 30px;
+            primary: true;
             text: "Open Image";
             clicked => {
-                root.clicked();
+            root.clicked();
             }
         }
 
-        Text {
-            // text: selected_image;
-        }
-        Image {
-            // source: @image-url("{root.selected_image}");
-            source: selected_image;
-        }
     }
+
+
 }
 

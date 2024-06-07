@@ -1,0 +1,39 @@
+import { ScrollView, Spinner } from "std-widgets.slint";
+export component displayImages inherits Rectangle {
+
+    in property <color> bgcolor;
+    in property <image> inputimage;
+
+    min-width: 400px;
+    min-height: 400px;
+
+    preferred-height: 500px;
+    preferred-width: 500px;
+
+    max-height: 600px;
+    max-width: 600px;
+
+    background: bgcolor;
+
+    ScrollView {
+        enabled: true;
+        viewport-height: inputimage.height * 1px;
+        viewport-width: inputimage.width * 1px;
+
+        if (inputimage.height == 0): Rectangle {
+
+            x: 40px;
+            y: 40px;
+            Spinner {}
+            Text {
+                text: "Select Image";
+            }
+            
+        }
+
+        Image {
+            source: inputimage;
+            image-fit: contain;
+        }
+    }
+}

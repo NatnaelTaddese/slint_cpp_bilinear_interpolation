@@ -59,3 +59,9 @@ Don't forget to edit this README to replace it by yours
 <!-- TODO: edit readme file and update on how to build this from source -->
 
 make sure you have installed gtk and opencv and are availble in your PATH variable
+
+to change the UI style
+
+```
+cmake -DSLINT_STYLE="material" build/
+```
