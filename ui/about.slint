@@ -1,0 +1,12 @@
+import { StandardButton, Button } from "std-widgets.slint";
+export component MoreInfo inherits Dialog {
+    Text {
+      text: "This is a dialog box";
+    }
+    StandardButton { kind: ok; }
+    StandardButton { kind: cancel; }
+    Button {
+      text: "More Info";
+      dialog-button-role: action;
+    }
+}

@@ -1,18 +1,91 @@
-import { Button } from "std-widgets.slint";
+import { Button, VerticalBox, SpinBox, GroupBox, HorizontalBox } from "std-widgets.slint";
+import { MoreInfo } from "about.slint";
 export component SideBar inherits Rectangle{
 
     in property <bool> ValidImageLoaded : false;
+    in property <int> currentWidth: 200;
+    in property <int> currentHeight: 500;
+    
 
-    min-width: 200px;
+    min-width: 250px;
     max-width: 400px;
 
     background: rgb(43, 45, 48);
 
-    Button {
-        enabled: root.ValidImageLoaded;
-        primary: true;
-        text: @tr("Save to file");
+    VerticalBox {
+
+
+        VerticalBox {
+            HorizontalBox {
+                Rectangle {
+                    
+                    Text {text: @tr("Height: ");}
+                }
+
+                Rectangle {
+                    // height: root.width - 30px;
+                    desiredHeight := SpinBox {
+                        enabled: root.ValidImageLoaded;
+                        value: currentHeight;
+                        minimum: 0;
+                        maximum: 30000;
+                    }
+                }
+
+
+            }
+            HorizontalBox {
+                Rectangle {
+                    Text {text: @tr("Width: ");}
+                }
+
+                Rectangle {
+                    desiredWidth := SpinBox {
+                        enabled: root.ValidImageLoaded;
+                        value: currentWidth;
+                        minimum: 0;
+                        maximum: 30000;
+                    }
+        
+                }
+
+            }
+            HorizontalBox {
+                Button {
+                    enabled: root.ValidImageLoaded;
+                    text: @tr("Resize");
+                }
+
+            }
+        }
+
+        HorizontalBox {
+            vertical-stretch: 0;
+    
+            
+            
+            
+
+        }
+
+        GroupBox {
+            vertical-stretch: 0;
+            
+            
+        }
+        
+        
+
+        Button {
+            height: 25px;
+            enabled: root.ValidImageLoaded;
+            primary: true;
+            text: @tr("Save to file");
+        }
+
+        // MoreInfo {}
     }
 
+    
 
 }

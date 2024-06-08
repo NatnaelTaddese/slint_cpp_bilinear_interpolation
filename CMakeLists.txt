@@ -21,19 +21,24 @@ endif (NOT Slint_FOUND)
 # Find OpenCV
 find_package(OpenCV REQUIRED)
 
-# Find GTK
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+# Find GTK and set sources based on platform
+if (WIN32)
+    set(SOURCES src/main.cpp)
+else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+    include_directories(${GTK3_INCLUDE_DIRS})
+    link_directories(${GTK3_LIBRARY_DIRS})
+    set(SOURCES src/main.cpp)
+endif()
 
-
-add_executable(my_application src/main.cpp)
+# Add the executable
+add_executable(my_application ${SOURCES})
 target_link_libraries(my_application PRIVATE Slint::Slint ${OpenCV_LIBS} ${GTK3_LIBRARIES})
-# target_link_libraries(my_application PRIVATE Slint::Slint)
-
 target_include_directories(my_application PRIVATE ${GTK3_INCLUDE_DIRS})
 target_compile_options(my_application PRIVATE ${GTK3_CFLAGS_OTHER})
-
 slint_target_sources(my_application ui/appwindow.slint)
+
 # On Windows, copy the Slint DLL next to the application binary so that it's found.
 if (WIN32)
     add_custom_command(TARGET my_application POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:my_application> $<TARGET_FILE_DIR:my_application> COMMAND_EXPAND_LISTS)

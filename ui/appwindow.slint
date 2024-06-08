@@ -10,6 +10,7 @@ export component AppWindow inherits Window {
     preferred-width: 300px;
 
     callback clicked();
+    callback aboutDialog();
     in property<image> selected_image: @image-url("");
     in property <bool> valid_image_selected;
     property <image> emptyImage: @image-url("");
@@ -104,6 +105,8 @@ export component AppWindow inherits Window {
 
         SideBar {
             ValidImageLoaded: valid_image_selected;
+            currentHeight: selected_image.height;
+            currentWidth: selected_image.width;
         }
 
         
