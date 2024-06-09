@@ -1,5 +1,7 @@
 import { Button, VerticalBox, SpinBox, GroupBox, HorizontalBox } from "std-widgets.slint";
 import { MoreInfo } from "about.slint";
+import { StyleMetrics } from "std-widgets.slint";
+import { Palette } from "std-widgets.slint";
 export component SideBar inherits Rectangle{
 
     in property <bool> ValidImageLoaded : false;
@@ -9,14 +11,19 @@ export component SideBar inherits Rectangle{
 
     min-width: 250px;
     max-width: 400px;
-
-    background: rgb(43, 45, 48);
+    
+    background: Palette.control-background;
+    // background: StyleMetrics.dark-color-scheme ? rgb(43, 45, 48): white;
 
     VerticalBox {
 
 
         VerticalBox {
+
+            max-height: 20px;
+            
             HorizontalBox {
+                
                 Rectangle {
                     
                     Text {text: @tr("Height: ");}
@@ -31,6 +38,7 @@ export component SideBar inherits Rectangle{
                         maximum: 30000;
                     }
                 }
+                
 
 
             }
@@ -59,14 +67,14 @@ export component SideBar inherits Rectangle{
             }
         }
 
-        HorizontalBox {
-            vertical-stretch: 0;
+        // HorizontalBox {
+        //     vertical-stretch: 0;
     
             
             
             
 
-        }
+        // }
 
         GroupBox {
             vertical-stretch: 0;
