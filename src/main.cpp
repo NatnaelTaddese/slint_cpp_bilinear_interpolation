@@ -48,6 +48,7 @@ int main(int argc, char **argv)
 
             if (image.empty()) {
                 std::cout << "Could not read the image: " << file_path << std::endl;
+                appwindow->set_valid_image_selected(false);
             } else {
                 std::cout << "Image loaded: " << file_path << std::endl;
                 appwindow->set_selected_image( slint::Image::load_from_path(file_path.c_str()));
@@ -62,6 +63,12 @@ int main(int argc, char **argv)
             appwindow->set_selected_image( slint::Image::load_from_path(""));
             appwindow->set_valid_image_selected(false);
         } });
+
+    if (argc > 1)
+    {
+        appwindow->set_selected_image(slint::Image::load_from_path(argv[1]));
+        appwindow->set_valid_image_selected(true);
+    }
 
     appwindow->run();
     return 0;
