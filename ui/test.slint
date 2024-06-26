@@ -1,0 +1,159 @@
+import { Button, VerticalBox, SpinBox, GroupBox, HorizontalBox } from "std-widgets.slint";
+import { MoreInfo } from "about.slint";
+import { StyleMetrics } from "std-widgets.slint";
+import { Palette, ScrollView, ComboBox, Slider } from "std-widgets.slint";
+
+export component SideBar inherits Rectangle {
+
+    in property <bool> ValidImageLoaded : false;
+    in property <int> currentWidth: 200;
+    in property <int> currentHeight: 500;
+    callback saveToFiles();
+
+    min-width: 350px;
+    max-width: 400px;
+    
+    background: Palette.control-background;
+
+    VerticalLayout {
+        padding: 20px;
+        spacing: 20px;
+
+        Text {
+            text: "Scale & Layout";
+            font-weight: 400;
+            font-size: 20px;
+        }
+
+        ScrollView {
+            padding: 20px;
+            VerticalBox {
+                padding: 30px;
+                spacing: 20px;
+                
+
+                GroupBox {
+                    height: 70px;
+                    title: "Scale";
+                    VerticalLayout {
+                        scaletype :=ComboBox {
+                            width: 100%;
+                            model: ["100%", "125%", "150%"];
+                            current-value: "100%";
+                            // items: ["100%", "125%", "150%"];
+                        }
+                    }
+                }
+
+                GroupBox {
+                    title: "Image Size";
+                    VerticalLayout {
+                        spacing: 10px;
+
+                        HorizontalLayout {
+                            spacing: 10px;
+                            Text { text: "Height:"; }
+                            SpinBox {
+                                enabled: scaletype.current-value == "100%";
+                                value: root.currentHeight;
+                                minimum: 0;
+                                maximum: 30000;
+                            }
+                        }
+
+                        HorizontalLayout {
+                            spacing: 10px;
+                            Text { text: "Width:"; }
+                            SpinBox {
+                                enabled: root.ValidImageLoaded;
+                                value: root.currentWidth;
+                                minimum: 0;
+                                maximum: 30000;
+                            }
+                        }
+
+                        HorizontalLayout {
+                            Button {
+                                height: 30px;
+                                enabled: root.ValidImageLoaded;
+                                text: "Resize";
+                            }
+                        }
+                    }
+                }
+
+                GroupBox {
+                    title: "Rotate";
+                    VerticalLayout {
+                        HorizontalLayout {
+                            spacing: 10px;
+                            Text { text: "Rotate:"; }
+                            Slider {
+                                width: 100%;
+                                minimum: 0;
+                                maximum: 360;
+                                value: 0;
+                            }
+                        }
+                    }
+                }
+
+                GroupBox {
+                    title: "Blur";
+                    VerticalLayout {
+                        HorizontalLayout {
+                            spacing: 10px;
+                            Text { text: "Blur:"; }
+                            Slider {
+                                width: 100%;
+                                minimum: 0;
+                                maximum: 100;
+                                value: 0;
+                            }
+                        }
+                    }
+                }
+
+                GroupBox {
+                    title: "Brightness";
+                    VerticalLayout {
+                        HorizontalLayout {
+                            spacing: 10px;
+                            Text { text: "Brightness:"; }
+                            Slider {
+                                width: 100%;
+                                minimum: 0;
+                                maximum: 100;
+                                value: 50;
+                            }
+                        }
+                    }
+                }
+
+                GroupBox {
+                    title: "Contrast";
+                    VerticalLayout {
+                        HorizontalLayout {
+                            spacing: 10px;
+                            Text { text: "Contrast:"; }
+                            Slider {
+                                width: 100%;
+                                minimum: 0;
+                                maximum: 100;
+                                value: 50;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Button {
+            height: 25px;
+            enabled: root.ValidImageLoaded;
+            primary: true;
+            text: "Save to file";
+            clicked => { root.saveToFiles(); }
+        }
+    }
+}

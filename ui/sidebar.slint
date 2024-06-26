@@ -1,86 +1,182 @@
-import { Button, VerticalBox, SpinBox, GroupBox, HorizontalBox } from "std-widgets.slint";
+import { Button, VerticalBox, SpinBox, GroupBox, HorizontalBox, Switch } from "std-widgets.slint";
 import { MoreInfo } from "about.slint";
 import { StyleMetrics } from "std-widgets.slint";
-import { Palette } from "std-widgets.slint";
+import { Palette, ScrollView, ComboBox, Slider } from "std-widgets.slint";
 export component SideBar inherits Rectangle{
 
     in property <bool> ValidImageLoaded : false;
-    in property <int> currentWidth: 200;
-    in property <int> currentHeight: 500;
-    
+    in property <int> originalWidth: 200;
+    in property <int> originalHeight: 500;
 
-    min-width: 250px;
-    max-width: 400px;
+    out property <int> currentWidth: originalWidth;
+    out property <int> currentHeight: originalHeight;
+
+    property <bool> canSetCustomSize : false;
+
+    callback resize();
+    callback saveToFiles();
+
+    min-width: 350px;
+    max-width: 500px;
     
     background: Palette.control-background;
     // background: StyleMetrics.dark-color-scheme ? rgb(43, 45, 48): white;
 
-    VerticalBox {
+    VerticalLayout {
+        padding: 20px;
+        spacing: 20px;
 
-
-        VerticalBox {
-
-            max-height: 20px;
-            
-            HorizontalBox {
-                
-                Rectangle {
-                    
-                    Text {text: @tr("Height: ");}
-                }
-
-                Rectangle {
-                    // height: root.width - 30px;
-                    desiredHeight := SpinBox {
-                        enabled: root.ValidImageLoaded;
-                        value: currentHeight;
-                        minimum: 0;
-                        maximum: 30000;
-                    }
-                }
-                
-
-
+        // Title Area + switch for easy dark mode
+        HorizontalBox {
+            Text {
+                text: "Scale & Layout";
+                font-weight: 400;
+                font-size: 20px;
             }
-            HorizontalBox {
-                Rectangle {
-                    Text {text: @tr("Width: ");}
-                }
+            Rectangle {}
 
-                Rectangle {
-                    desiredWidth := SpinBox {
-                        enabled: root.ValidImageLoaded;
-                        value: currentWidth;
-                        minimum: 0;
-                        maximum: 30000;
-                    }
+            Switch {
+                horizontal-stretch: 0;
+                text: @tr("Dark Mode");
+                checked: Palette.color-scheme == ColorScheme.dark;
+                toggled => {                
+                    Palette.color-scheme = self.checked ? ColorScheme.dark : ColorScheme.light;
+                }
+            }
+        }
+
         
+
+        ScrollView {
+            // min-width: 210px;
+            // max-width: 300px;
+
+            VerticalBox {
+
+                GroupBox {
+                    height: 70px;
+                    title: "Scale";
+                    VerticalLayout {
+                        scaleComboBox := ComboBox {
+                            width: 100%;
+                            model: ["25%","50%","100% (Original)", "125%", "150%","175%", "200%", "Custom Size"];
+                            current-value: "100% (Original)";
+                            selected => {
+                                if (self.current-value == "Custom Size") {
+                                    root.canSetCustomSize = true;
+                                }
+                                else if (self.current-value == "25%"){
+                                    root.currentWidth = root.originalWidth * 0.25;
+                                    root.currentHeight = root.originalHeight * 0.25;
+                                    
+                                    root.canSetCustomSize = false;
+
+                                }
+                                else if (self.current-value == "50%"){
+                                    root.currentWidth = root.originalWidth * 0.5;
+                                    root.currentHeight = root.originalHeight * 0.5;
+                                    
+                                    root.canSetCustomSize = false;
+
+                                }
+                                else if (self.current-value == "100% (Original)"){
+                                    root.currentWidth = root.originalWidth * 1;
+                                    root.currentHeight = root.originalHeight * 1;
+                                    
+                                    root.canSetCustomSize = false;
+
+                                }
+                                else if (self.current-value == "125%"){
+                                    root.currentWidth = root.originalWidth * 1.25;
+                                    root.currentHeight = root.originalHeight * 1.25;
+                                    
+                                    root.canSetCustomSize = false;
+
+                                }
+                                else if (self.current-value == "150%"){
+                                    root.currentWidth = root.originalWidth * 1.5;
+                                    root.currentHeight = root.originalHeight * 1.5;
+                                    
+                                    root.canSetCustomSize = false;
+
+                                }
+                                else if (self.current-value == "175%"){
+                                    root.currentWidth = root.originalWidth * 1.75;
+                                    root.currentHeight = root.originalHeight * 1.75;
+                                    
+                                    root.canSetCustomSize = false;
+
+                                }
+                                else if (self.current-value == "200%"){
+                                    root.currentWidth = root.originalWidth * 2;
+                                    root.currentHeight = root.originalHeight * 2;
+                                    
+                                    root.canSetCustomSize = false;
+
+                                }
+                            }
+                        }
+                    }
                 }
+                
+                
 
-            }
-            HorizontalBox {
-                Button {
-                    enabled: root.ValidImageLoaded;
-                    text: @tr("Resize");
-                }
+                GroupBox {
+                    title: "Image Size";
 
-            }
-        }
-
-        // HorizontalBox {
-        //     vertical-stretch: 0;
+                    VerticalLayout {
+                        HorizontalLayout {
+                            Rectangle {
+                                Text {text: @tr("Height: ");}
+                            }
     
-            
-            
-            
+                            Rectangle {
+                            // height: root.width - 30px;
+                            desiredHeight := SpinBox {
+                                enabled: root.canSetCustomSize;
+                                value: root.currentHeight;
+                                minimum: 0;
+                                maximum: 30000;
 
-        // }
+                                edited => {
+                                    if(root.canSetCustomSize){
+                                        root.currentHeight = self.value;
+                                    }
+                                    else{
+                                        self.value = root.currentHeight;
+                                    }
+                                }
+                                }
+                            }
+                        }
 
-        GroupBox {
-            vertical-stretch: 0;
+                        HorizontalLayout {
+                            Rectangle {
+                                Text {text: @tr("Width: ");}
+                            }
+    
+                            Rectangle {
+                                desiredWidth := SpinBox {
+                                    enabled: root.canSetCustomSize;
+                                    value: root.currentWidth;
+                                    minimum: 0;
+                                    maximum: 30000;
+                                }
+                    
+                            }
+                        }
+                    }
+                }
+
+                
+            }
+
             
-            
+           
         }
+
+      
+        
         
         
 
@@ -89,6 +185,7 @@ export component SideBar inherits Rectangle{
             enabled: root.ValidImageLoaded;
             primary: true;
             text: @tr("Save to file");
+            clicked => {root.saveToFiles();}
         }
 
         // MoreInfo {}
