@@ -114,4 +114,5 @@ After building the project, you can run the application from the build directory
 build\windows\Debug\bilinearInterpolationApp.exe
 ```
 
-![bye](./screenshots/linux/Screenshot%20from%202024-06-28%2001-42-54.png)
+![linux](./screenshots/linux/Screenshot%20from%202024-06-28%2001-41-25.png)
+![app running on linux](./screenshots/linux/Screenshot%20from%202024-06-28%2001-42-54.png)
