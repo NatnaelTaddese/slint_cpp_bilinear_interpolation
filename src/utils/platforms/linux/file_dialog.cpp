@@ -63,61 +63,6 @@ bool saveToFileDialog(const std::string &tempFilePath)
                                          NULL);
     gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
 
-    // Extract the file name from the temp file path
-    std::filesystem::path filePath(tempFilePath);
-    gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER(dialog), filePath.filename().string().c_str());
-
-    res = gtk_dialog_run(GTK_DIALOG(dialog));
-    if (res == GTK_RESPONSE_ACCEPT)
-    {
-        char *file_path;
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER(dialog);
-        file_path = gtk_file_chooser_get_filename(chooser);
-        savePath = file_path;
-        // manage memory
-        g_free(file_path);
-
-        // Copy the contents of the temp file to the selected file path
-        std::ifstream src(tempFilePath, std::ios::binary);
-        std::ofstream dest(savePath, std::ios::binary);
-
-        dest << src.rdbuf();
-
-        gtk_widget_destroy(dialog);
-        while (gtk_events_pending())
-        {
-            gtk_main_iteration();
-        }
-
-        return true;
-    }
-
-    gtk_widget_destroy(dialog);
-    while (gtk_events_pending())
-    {
-        gtk_main_iteration();
-    }
-
-    return false;
-}
-{
-    GtkWidget *dialog;
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-    gint res;
-    std::string savePath;
-
-    gtk_init(nullptr, nullptr);
-
-    dialog = gtk_file_chooser_dialog_new("Save File",
-                                         NULL,
-                                         action,
-                                         ("_Cancel"),
-                                         GTK_RESPONSE_CANCEL,
-                                         ("_Save"),
-                                         GTK_RESPONSE_ACCEPT,
-                                         NULL);
-    gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER(dialog), TRUE);
-
     res = gtk_dialog_run(GTK_DIALOG(dialog));
     if (res == GTK_RESPONSE_ACCEPT)
     {

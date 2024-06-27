@@ -1,67 +1,113 @@
-# Slint C++ Template
+# Bilinear Interpolation Image Resizer
 
-A template for a C++ application that's using [Slint](https://slint.dev) for the user interface and CMake for the build system.
+## Introduction
 
-## About
+![App](./screenshots/windows/Screenshot%202024-06-28%20021401.png)
 
-This template helps you get started developing a C++ application with Slint as toolkit
-for the user interface. It demonstrates the integration between the `.slint` UI markup and
-C++ code, how to trigger react to callbacks, get and set properties and use basic widgets.
+This project is a simple application for resizing images using bilinear interpolation. The application uses C++ and OpenCV for image processing, SlintUI for the user interface.
 
-## Prerequisites
+## Building the Project from Source
 
-In order to use this template and build a C++ application, you need to install a few tools:
+### Prerequisites
 
-- **[cmake](https://cmake.org/download/)** (3.21 or newer)
-- A C++ compiler that supports C++ 20
+Ensure you have the following dependencies installed on your system:
 
-If your target environment is Linux or Windows on an x86-64 architecture, then you may also opt into downloading one of our binary Slint packages. These are pre-compiled and require no further tools. You can find setup instructions and download links at
+1. **CMake** (version 3.21 or higher)
+2. **OpenCV**
+3. **GTK3** (for Linux)
+4. **Git**
 
-<https://slint.dev/docs/cpp/cmake.html#install-binary-packages>
+### Installing Dependencies
 
-Alternatively, this template will automatically download the Slint sources and compile them. This option requires you to install Rust by following the [Rust Getting Started Guide](https://www.rust-lang.org/learn/get-started). Once this is done, you should have the `rustc` compiler and the `cargo` build system installed in your path.
+#### Ubuntu/Linux
 
-## Usage
+1. **Install CMake**:
 
-1. Clone or download this repository
+   ```sh
+   sudo apt-get update
+   sudo apt-get install -y cmake
    ```
-   git clone https://github.com/slint-ui/slint-cpp-template my-project
-   cd my-project
+
+2. **Install OpenCV**:
+
+   ```sh
+   sudo apt-get install -y libopencv-dev
    ```
-2. Configure with CMake
+
+3. **Install GTK3**:
+
+   ```sh
+   sudo apt-get install -y libgtk-3-dev
    ```
+
+4. **Install Git**:
+   ```sh
+   sudo apt-get install -y git
+   ```
+
+#### Windows
+
+1. **Install CMake**:
+
+   - Download and install CMake from [cmake.org](https://cmake.org/download/).
+
+2. **Install OpenCV**:
+
+   - Download OpenCV from [opencv.org](https://opencv.org/releases/).
+   - Follow the [installation guide](https://docs.opencv.org/master/d3/d52/tutorial_windows_install.html).
+
+3. **Install Git**:
+   - Download and install Git from [git-scm.com](https://git-scm.com/download/win).
+
+### Building the Project
+
+1. **Clone this Repository**:
+
+   ```sh
+   git clone https://github.com/NatnaelTaddese/slint_cpp_bilinear_interpolation.git
+   cd slint_cpp_bilinear_interpolation
+   ```
+
+2. **Configure and Build**:
+
+   ```sh
    mkdir build
-   cmake -B build
    ```
-3. Build with CMake
+
+   If Slint is not found, it will be downloaded and built locally during the CMake configuration step.
+
+   But to build it from source you may need [Rust](https://www.rust-lang.org/tools/install), refer to the documentaion [here](https://www.rust-lang.org/tools/install)
+
+   if you don't want to fiddle with Rust, you can install the [Slint Binary](https://releases.slint.dev/1.6.0/docs/cpp/cmake#install-binary-packages) for your respective OS and [add it to your path](https://www3.ntu.edu.sg/home/ehchua/programming/howto/Environment_Variables.html#zz-2.6).
+
+   - **for Linux**
+
+   ```sh
+   cmake -B build/linux
+   cmake -DSLINT_STYLE="fluent" build/linux
+   cmake --build build/linux
    ```
-   cmake --build build
+
+   - **for Windows**
+
+   ```sh
+   cmake -B build/windows -DCMAKE_PREFIX_PATH=" \path\to\slint\bin\ " -DOpenCV_DIR=" \path\to\openCV\opencv\build\x64\vc16\lib "
+
+   cmake --build build/windows
    ```
-4. Run the application binary
-   - Linux/macOS:
-     ```
-     ./build/my_application
-     ```
-   - Windows:
-     ```
-     build\my_application.exe
-     ```
 
-We recommend using an IDE for development, along with our [LSP-based IDE integration for `.slint` files](https://github.com/slint-ui/slint/blob/master/tools/lsp/README.md). You can also load this project directly in [Visual Studio Code](https://code.visualstudio.com) and install our [Slint extension](https://marketplace.visualstudio.com/items?itemName=Slint.slint).
+## Using the Application
 
-## Next Steps
+After building the project, you can run the application from the build directory:
 
-We hope that this template helps you get started and you enjoy exploring making user interfaces with Slint. To learn more
-about the Slint APIs and the `.slint` markup language check out our [online documentation](https://slint.dev/docs/cpp/).
+- **for Linux**
 
-Don't forget to edit this README to replace it by yours
-
-<!-- TODO: edit readme file and update on how to build this from source -->
-
-make sure you have installed gtk and opencv and are availble in your PATH variable
-
-to change the UI style
-
+```sh
+./build/linux/bilinearInterpolationApp
 ```
-cmake -DSLINT_STYLE="material" build/
+
+- **for Windows**
+
+```sh
+build\windows\Debug\bilinearInterpolationApp.exe
 ```
