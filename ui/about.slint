@@ -1,12 +1,14 @@
-import { StandardButton, Button } from "std-widgets.slint";
-export component MoreInfo inherits Dialog {
-    Text {
-      text: "This is a dialog box";
+import { AboutSlint } from "std-widgets.slint";
+import { Button, VerticalBox, SpinBox, GroupBox, HorizontalBox, Switch } from "std-widgets.slint";
+
+export component About inherits Window {
+    always-on-top: true;
+    
+    // height: 175px;
+    AboutSlint {
     }
-    StandardButton { kind: ok; }
-    StandardButton { kind: cancel; }
     Button {
-      text: "More Info";
-      dialog-button-role: action;
-    }
+      text: "Close";
+      clicked => { root.visible = false; }
+  }
 }

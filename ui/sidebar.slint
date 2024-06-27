@@ -1,7 +1,9 @@
 import { Button, VerticalBox, SpinBox, GroupBox, HorizontalBox, Switch } from "std-widgets.slint";
-import { MoreInfo } from "about.slint";
+
 import { StyleMetrics } from "std-widgets.slint";
 import { Palette, ScrollView, ComboBox, Slider } from "std-widgets.slint";
+
+import { About } from "about.slint";
 export component SideBar inherits Rectangle{
 
     in property <bool> ValidImageLoaded : false;
@@ -225,17 +227,31 @@ export component SideBar inherits Rectangle{
         }
 
       
-        
+        HorizontalBox {
+            Button {
+                height: 25px;
+                enabled: root.ValidImageLoaded;
+                primary: true;
+                text: @tr("Save to file");
+                clicked => {root.saveToFiles();}
+            }
+            Button {
+                icon: Palette.color-scheme == ColorScheme.dark? @image-url("./res/info_light.png") :  @image-url("./res/info.png");
+                height: 25px;
+                width: 45px;
+                clicked => {
+
+                    
+
+                }
+
+            }
+        }
         
         
 
-        Button {
-            height: 25px;
-            enabled: root.ValidImageLoaded;
-            primary: true;
-            text: @tr("Save to file");
-            clicked => {root.saveToFiles();}
-        }
+        
+        
 
         // MoreInfo {}
     }
