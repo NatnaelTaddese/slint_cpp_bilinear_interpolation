@@ -108,6 +108,10 @@ After building the project, you can run the application from the build directory
 
 - **for Windows**
 
+  make sure you have the latest [vcredist](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170) installed in your system.
+
 ```sh
 build\windows\Debug\bilinearInterpolationApp.exe
 ```
+
+![bye](./screenshots/linux/Screenshot%20from%202024-06-28%2001-42-54.png)
