@@ -13,7 +13,7 @@ export component SideBar inherits Rectangle{
 
     property <bool> canSetCustomSize : false;
 
-    callback resize();
+    callback resize(int,int);
     callback saveToFiles();
 
     min-width: 350px;
@@ -25,6 +25,7 @@ export component SideBar inherits Rectangle{
     VerticalLayout {
         padding: 20px;
         spacing: 20px;
+        
 
         // Title Area + switch for easy dark mode
         HorizontalBox {
@@ -50,14 +51,17 @@ export component SideBar inherits Rectangle{
         ScrollView {
             // min-width: 210px;
             // max-width: 300px;
-
+            
+            // scale and width controls 
             VerticalBox {
+                
 
                 GroupBox {
                     height: 70px;
                     title: "Scale";
                     VerticalLayout {
                         scaleComboBox := ComboBox {
+                            enabled: root.ValidImageLoaded;
                             width: 100%;
                             model: ["25%","50%","100% (Original)", "125%", "150%","175%", "200%", "Custom Size"];
                             current-value: "100% (Original)";
@@ -124,34 +128,54 @@ export component SideBar inherits Rectangle{
                 GroupBox {
                     title: "Image Size";
 
+                    height: 200px;
+
                     VerticalLayout {
-                        HorizontalLayout {
+                        
+                        HorizontalBox {
+                            
+                            alignment: start;
+                            padding: 0px;
+
+
                             Rectangle {
+                                width: 50px;
                                 Text {text: @tr("Height: ");}
                             }
+                            
+                           
     
                             Rectangle {
-                            // height: root.width - 30px;
-                            desiredHeight := SpinBox {
-                                enabled: root.canSetCustomSize;
-                                value: root.currentHeight;
-                                minimum: 0;
-                                maximum: 30000;
-
-                                edited => {
-                                    if(root.canSetCustomSize){
-                                        root.currentHeight = self.value;
+                                desiredHeight := SpinBox {
+                                    enabled: root.canSetCustomSize;
+                                    value: root.currentHeight;
+                                    minimum: 0;
+                                    maximum: 30000;
+    
+                                        edited => {
+                                            if(root.canSetCustomSize){
+                                                root.currentHeight = self.value;
+                                            }
+                                            else{
+                                                self.value = root.currentHeight;
+                                            }
+                                        }
                                     }
-                                    else{
-                                        self.value = root.currentHeight;
-                                    }
-                                }
-                                }
                             }
+
+                            Rectangle {
+                                width: 40px;
+                                Text {text: @tr("Pixels");}
+                            }
+                            
+                            
                         }
 
-                        HorizontalLayout {
+                        HorizontalBox {
+                            alignment: start;
+                            padding: 0px;
                             Rectangle {
+                                width: 50px;
                                 Text {text: @tr("Width: ");}
                             }
     
@@ -162,11 +186,36 @@ export component SideBar inherits Rectangle{
                                     minimum: 0;
                                     maximum: 30000;
                                 }
-                    
+                            }
+
+                            Rectangle {
+                                width: 40px;
+                                Text {text: @tr("Pixels");}
+                            }
+                            
+                        }
+
+                        HorizontalBox {
+                            alignment: start;
+                            Button {
+                                height: 30px;
+                                width: 180px;
+                                enabled: root.ValidImageLoaded;
+
+                                text: @tr("Resize");
+
+                                clicked => {
+                                    root.resize(root.currentWidth, root.currentHeight);
+                                }
                             }
                         }
+                        
                     }
                 }
+
+                
+
+                
 
                 
             }

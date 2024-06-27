@@ -1,4 +1,6 @@
 #include <opencv2/opencv.hpp>
+#include "utils/shared/random_number.cpp"
+#include <filesystem>
 
 #include "appwindow.h"
 
@@ -53,6 +55,7 @@ int main(int argc, char **argv)
                 std::cout << "Image loaded: " << file_path << std::endl;
                 appwindow->set_selected_image( slint::Image::load_from_path(file_path.c_str()));
                 appwindow->set_valid_image_selected(true);
+                appwindow->set_output_image(slint::Image::load_from_path(""));
 
                 // Display the image using OpenCV (optional)
                 // cv::imshow("Selected Image", image);
@@ -69,6 +72,74 @@ int main(int argc, char **argv)
         appwindow->set_selected_image(slint::Image::load_from_path(argv[1]));
         appwindow->set_valid_image_selected(true);
     }
+
+    appwindow->on_resizeImage([&](int desiredWidth, int desiredHeight)
+                              {
+                                  slint::SharedString raw_file_path = appwindow->get_selected_image().path().value();
+                                  std::string file_path = raw_file_path.data();
+
+                                  std::cout << "original path: " << file_path << std::endl;
+                                  appwindow->set_output_image(slint::Image::load_from_path(""));
+
+                                  if (!file_path.empty())
+                                  {
+                                      cv::Mat image = cv::imread(file_path);
+                                      if (!image.empty())
+                                      {
+                                          cv::Mat resized_image;
+                                          cv::resize(image, resized_image, cv::Size(desiredWidth, desiredHeight));
+
+                                          // Save the resized image to a temporary file
+                                          std::string temp_path = "image_" + std::to_string(seed_random_number()) + "__" + std::to_string(desiredWidth) + "x" + std::to_string(desiredHeight) + ".png";
+                                          cv::imwrite(temp_path, resized_image);
+
+                                          // Update the UI with the resized image
+
+                                          appwindow->set_output_image(slint::Image::load_from_path(temp_path.c_str()));
+                                      }
+                                      else
+                                      {
+                                          std::cout << "Failed to read the image for resizing: " << file_path << std::endl;
+                                      }
+                                  }
+                                  else
+                                  {
+                                      std::cout << "No image selected to resize." << std::endl;
+                                  }
+
+                                  std::cout << desiredWidth << " : " << desiredHeight << std::endl;
+                                  // sets the appwindow->set_output_image to the resized image from the opencv
+                              });
+
+    appwindow->on_saveToFiles([&]()
+                              {
+                                  std::cout << "ready to save to file" << std::endl;
+                                  slint::SharedString raw_file_path = appwindow->get_output_image().path().value();
+                                  std::string file_path = raw_file_path.data();
+
+                                  std::cout << file_path << std::endl;
+
+                                  // Convert the relative path to an absolute path
+                                    std::filesystem::path absolutePath = std::filesystem::absolute(file_path);
+
+                                // Convert the absolute path to string and use it in saveToFileDialog
+                                    std::string tempFilePath = absolutePath.string();
+
+                                    std::cout << tempFilePath << std::endl;
+
+
+                                  if (!file_path.empty())
+                                  {
+                                      bool success = saveToFileDialog(tempFilePath);
+                                      if (success)
+                                      {
+                                          std::cout << "File saved" << std::endl;
+                                      }
+                                      else
+                                      {
+                                          std::cout << "Failed to save file" << std::endl;
+                                      }
+                                  } });
 
     appwindow->run();
     return 0;

@@ -10,71 +10,17 @@ export component AppWindow inherits Window {
     preferred-width: 300px;
 
     callback clicked();
+    callback resizeImage(int,int);
+    callback saveToFiles();
     callback aboutDialog();
+
     in property<image> selected_image: @image-url("");
+    in property<image> output_image: @image-url("");
+    
     in property <bool> valid_image_selected;
     property <image> emptyImage: @image-url("");
 
-    // VerticalBox {
-    //     // max-width: 400px;
-    //     Button {
-    //         // max-width: 30px;
-    //         primary: true;
-    //         text: "Open Image";
-    //         clicked => {
-    //             root.clicked();
-    //         }
-    //     }
-
-    //     Text {
-    //         // text: selected_image;
-    //         // width: 300px;
-    //     }
-        
-    //     Rectangle {
-            
-    //         border-radius: 5px;
-            
-    //     }
-
-    //     GridLayout {
-    //         preferred-height: 300px;
-    //         preferred-width: 300px;
-    //         Rectangle {
-    //             background: red;
-    //             preferred-height: 80px;
-    //             preferred-width: 80px;
-    //         }
-
-    //         Rectangle {
-    //             background: green;
-    //             preferred-height: 80px;
-    //             preferred-width: 80px;
-    //         }
-
-    //         Rectangle {
-    //             background: yellow;
-    //             preferred-height: 80px;
-    //             preferred-width: 80px;
-    //             max-width: 100px;
-    //         }
-    //     }
-
-    //     ScrollView {
-    //         enabled: true;
-    //         viewport-height: 600px;
-    //         viewport-width: 500px;
-        
-    //         Image {
-    //             // source: @image-url("{root.selected_image}");
-    //             source: selected_image;
-    //             image-fit: contain;
-                
-                
-    //         }
-    //     }
-        
-    // }
+    
 
     HorizontalBox {
         padding: 0px;
@@ -100,13 +46,17 @@ export component AppWindow inherits Window {
 
         outputImage := displayImages {
             // bgcolor: blue;
+            inputimage: output_image;
         }
 
 
-        SideBar {
+        sidebar := SideBar {
             ValidImageLoaded: valid_image_selected;
             originalHeight: selected_image.height;
             originalWidth: selected_image.width;
+            resize => {root.resizeImage(self.currentWidth,self.currentHeight);}
+            saveToFiles => {root.saveToFiles();}
+
         }
 
         

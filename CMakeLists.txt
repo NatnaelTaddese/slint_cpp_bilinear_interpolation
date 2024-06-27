@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(my_application LANGUAGES CXX)
+project(bilinearInterpolationApp LANGUAGES CXX)
 
 find_package(Slint QUIET)
 
@@ -33,13 +33,13 @@ else()
 endif()
 
 # Add the executable
-add_executable(my_application ${SOURCES})
-target_link_libraries(my_application PRIVATE Slint::Slint ${OpenCV_LIBS} ${GTK3_LIBRARIES})
-target_include_directories(my_application PRIVATE ${GTK3_INCLUDE_DIRS})
-target_compile_options(my_application PRIVATE ${GTK3_CFLAGS_OTHER})
-slint_target_sources(my_application ui/appwindow.slint)
+add_executable(bilinearInterpolationApp ${SOURCES})
+target_link_libraries(bilinearInterpolationApp PRIVATE Slint::Slint ${OpenCV_LIBS} ${GTK3_LIBRARIES})
+target_include_directories(bilinearInterpolationApp PRIVATE ${GTK3_INCLUDE_DIRS})
+target_compile_options(bilinearInterpolationApp PRIVATE ${GTK3_CFLAGS_OTHER})
+slint_target_sources(bilinearInterpolationApp ui/appwindow.slint)
 
 # On Windows, copy the Slint DLL next to the application binary so that it's found.
 if (WIN32)
-    add_custom_command(TARGET my_application POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:my_application> $<TARGET_FILE_DIR:my_application> COMMAND_EXPAND_LISTS)
+    add_custom_command(TARGET bilinearInterpolationApp POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:bilinearInterpolationApp> $<TARGET_FILE_DIR:bilinearInterpolationApp> COMMAND_EXPAND_LISTS)
 endif()
